@@ -1,31 +1,13 @@
 <?php
-	ob_start();
-	session_start();
-	$error = NULL;
-	if($_SERVER["REQUEST_METHOD"] == "POST") {
-		require "GraemesMusic_mysqli.php";
-		if (isset($_POST["username"])) {
-			$myusername = mysqli_real_escape_string($conn, $_POST['username']);
-			$mypassword = mysqli_real_escape_string($conn, $_POST['password']);
-			$query = "SELECT Username FROM Users WHERE Username = '$myusername' and Password = '$mypassword'";
-
-			$result = mysqli_query($conn,$query);
-			$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-
-			$count = mysqli_num_rows($result);
-
-			if($count == 1) {
-				$_SESSION['login_user'] = $myusername;
-				header("location: 01_login.php");
-			} else {
-				$error = "ERROR! Your Login Name or Password is invalid";
-			}
-		}
-	}
-	ob_end_flush();
-?>
-
-<!--DOCTPYE html-->
+        session_start();
+        if(!isset($_SESSION['login_user'])){
+                header("location:01_login.php");
+				}
+		else{
+			$User = $_SESSION['login_user'];
+        }
+?>  
+<!--DOCTYPE html-->
 
 <html lang="en">
 	<head>
@@ -41,46 +23,31 @@
 		<link rel="stylesheet" href="css/nav.css"/>
 		<link rel="stylesheet" href="css/fonts.css"/>
 	</head>
-		<body>
-		
+		<body>	
+			
 				<!-- BANNER -->
 				<div class="banner-image">
-				
 					<?php
 							//Pulls the links from the nav.php page and places them in the navigation div
 							require '07_nav.php'; //'require' is 100% needed for the site to run 
 					?>
 				</div>
-		
-					<!-- CLASS FOR CONTENT -->
-					<div class="content">
-						<div class="content-box">
-
-						<!-- Holds the main page content -->
-							<div class="section3"><!--Holds the main page content -->
-								<h3><form method = "post" id="01_login">
-									<label for = 'login'>Username:</label>
-									<input type = "text" name = "username" placeholder="Enter user name"/><br />
-									<label for = 'login'>Password:</label>
-									<input type = "text" name = "password" placeholder="Enter password"/><br />
-									<input type = "submit" value = "Submit"/><br />
-								</form></h3>
-								<h3 class = "grey"><?php echo $error; ?></h3>
-							</div>					
-						</div>
+				
+				<!-- CLASS FOR CONTENT -->
+					<div>
+			
+			
 					</div>
-		
-		
-		
-		
-		
+
+			
 					<!-- my footer with my copyright-->
 
 					<div class="footer">
 						<h4>© 2024 Designed & developed by Trinisha Patel</h4>
 					</div>		
 
-		</body>
+			</body>
+	
 	<script>
 		let slideIndex = 1;
 		showSlides(slideIndex);
